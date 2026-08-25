@@ -1,6 +1,12 @@
-# app-templates
+<p align="center">
+  <img src="./assets/logo.svg" width="120" height="120" alt="Vibe to Cloud logo">
+</p>
 
-Starter templates for the [Vibe to Cloud](https://vibetocloud.com) platform.
+<p align="center"><em>Vibe to Cloud — describe your app and we build, host, and deploy it for you.</em></p>
+
+# Starter Templates
+
+The official project templates for the [Vibe to Cloud](https://vibetocloud.io) platform.
 
 When you create an application on the platform and pick a template, the files in
 that template's directory are scaffolded into your new app's repository — with
@@ -28,18 +34,10 @@ registry.json          # the catalog the platform reads
 matches a directory name. The platform reads this repo's `main` branch live, so a
 merged change appears in the catalog and is scaffoldable without any redeploy.
 
-### Placeholders
-
-Text files may use these tokens, substituted at scaffold time:
-
-- `__APP_NAME__` — the human-readable application name the user chose
-- `__APP_SLUG__` — a URL/package-safe slug derived from it
-
 ## Contributing
 
-Open a pull request against `main`. Only merged changes go live — a PR on its own
-changes nothing. To add a template: create a `<template-id>/` directory and add a
-matching entry to `registry.json` (the `id` must equal the directory name).
+See [CONTRIBUTING.md](./CONTRIBUTING.md) — how to add a template, the
+`__APP_NAME__` / `__APP_SLUG__` placeholders, and guidelines.
 
 ## License
 

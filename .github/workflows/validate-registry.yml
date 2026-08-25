@@ -1,0 +1,25 @@
+name: validate-registry
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  registry-matches-dirs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: registry.json ids must match template directories 1:1
+        run: |
+          ids=$(jq -r '.[].id' registry.json | sort)
+          dirs=$(find . -maxdepth 1 -mindepth 1 -type d \
+                   -not -name '.*' -not -name assets -printf '%f\n' | sort)
+          if [ "$ids" != "$dirs" ]; then
+            echo "::error::registry.json ids do not match template directories."
+            echo "--- ids in registry.json ---"; echo "$ids"
+            echo "--- template directories ---"; echo "$dirs"
+            diff <(echo "$ids") <(echo "$dirs") || true
+            exit 1
+          fi
+          echo "OK: $(echo "$ids" | wc -l) templates, registry and directories match."
