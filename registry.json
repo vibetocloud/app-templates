@@ -1,4 +1,5 @@
 [
+  { "id": "empty", "name": "Empty", "description": "A minimal static starter — the Vibe to Cloud logo on a page, served by nginx. No build, no backend. The fastest way to a live URL you can edit with Claude Code.", "tags": ["static", "starter", "empty", "html"] },
   { "id": "static-spa", "name": "Static SPA", "description": "Vite + React + TypeScript single-page app served by nginx. No backend or database.", "tags": ["vite", "react", "typescript", "spa", "static"] },
   { "id": "fastify-api", "name": "API Service", "description": "REST API using Fastify + TypeScript + Prisma + Postgres. Health check gated on the database, migrations applied on deploy.", "tags": ["node", "fastify", "typescript", "prisma", "postgresql", "api"] },
   { "id": "ai-app", "name": "AI App", "description": "Claude-powered chat API (Fastify + @anthropic-ai/sdk). Reads ANTHROPIC_API_KEY from a secret; no database.", "tags": ["node", "fastify", "typescript", "ai", "claude", "anthropic"] },

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>__APP_NAME__</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { height: 100%; }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #e8e8f0;
+        background: radial-gradient(1200px 600px at 50% -10%, #2b2b5c 0%, #14142b 45%, #0d0d1c 100%);
+        min-height: 100%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 24px;
+      }
+      .card { display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 520px; }
+      .logo {
+        width: 92px; height: 92px;
+        filter: drop-shadow(0 12px 40px rgba(72, 72, 229, 0.55));
+        animation: float 5s ease-in-out infinite;
+      }
+      @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+      h1 { font-size: clamp(28px, 6vw, 44px); font-weight: 700; letter-spacing: -0.02em; }
+      .sub { font-size: 15px; line-height: 1.6; color: #9a9ab8; }
+      .hint {
+        margin-top: 6px;
+        display: inline-flex; align-items: center; gap: 9px;
+        padding: 11px 16px; border-radius: 10px;
+        background: rgba(72, 72, 229, 0.12);
+        border: 1px solid rgba(72, 72, 229, 0.35);
+        color: #c9c9f2; font-size: 13.5px;
+      }
+      code { font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #b9b9ff; }
+      @media (prefers-reduced-motion: reduce) { .logo { animation: none; } }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <svg class="logo" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="32" height="32" rx="10" fill="#4848e5" />
+        <path fill="#fff" d="M24.7 14.5C24.2 11.9 21.9 10 19 10c-2.2 0-4.1 1.1-5.3 2.8C12.7 12.3 11.4 12 10 12c-2.8 0-5 2.2-5 5s2.2 5 5 5h14c2.2 0 4-1.8 4-4 0-1.8-1.2-3.3-3.3-3.5z" />
+      </svg>
+      <h1>__APP_NAME__</h1>
+      <p class="sub">Your app is live on Vibe to Cloud. This is an empty starter — the perfect blank canvas.</p>
+      <div class="hint">👋 Edit me with Claude Code, then run <code>/vibetocloud-deploy</code> to deploy</div>
+    </main>
+  </body>
+</html>
