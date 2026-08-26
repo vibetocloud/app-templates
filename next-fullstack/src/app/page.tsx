@@ -1,5 +1,8 @@
 import { prisma } from '../lib/prisma';
 
+// Reads live data on every request — no build-time prerender (no database exists during `docker build`).
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const count = await prisma.note.count();
   return (

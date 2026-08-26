@@ -1,0 +1,338 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #e8e8f0;
+  background: radial-gradient(1200px 600px at 50% -10%, #2b2b5c 0%, #14142b 45%, #0d0d1c 100%);
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-head h1 {
+  font-size: clamp(28px, 5vw, 40px);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 20px;
+  align-items: start;
+}
+
+.main-col,
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+h2 {
+  font-size: 17px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.count {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(72, 72, 229, 0.24);
+  color: #b9b9ff;
+}
+
+.sub {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #9a9ab8;
+}
+
+/* --- the sign-in form is the main thing on the screen --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  color: #c9c9f2;
+  min-width: 0;
+}
+
+.optional {
+  font-size: 12px;
+  color: #7a7a99;
+}
+
+input {
+  font: inherit;
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e8e8f0;
+}
+
+.signin input {
+  font-size: 17px;
+}
+
+input:focus {
+  outline: 2px solid #6b6bff;
+  outline-offset: 1px;
+}
+
+button.primary {
+  font: inherit;
+  font-weight: 600;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #4848e5;
+  color: #fff;
+  cursor: pointer;
+}
+
+button.primary:hover {
+  background: #5a5aff;
+}
+
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.primary.big {
+  font-size: 17px;
+  padding: 15px 20px;
+  margin-top: 4px;
+}
+
+button.ghost {
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #c9c9f2;
+  cursor: pointer;
+  flex: none;
+}
+
+button.ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.link {
+  font: inherit;
+  font-size: 12.5px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #9a9ab8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #c9c9f2;
+}
+
+.error,
+.success {
+  font-size: 14px;
+  padding: 11px 13px;
+  border-radius: 10px;
+}
+
+.error {
+  background: rgba(229, 72, 72, 0.13);
+  border: 1px solid rgba(229, 72, 72, 0.4);
+  color: #ffc9c9;
+}
+
+.success {
+  background: rgba(72, 229, 145, 0.12);
+  border: 1px solid rgba(72, 229, 145, 0.35);
+  color: #b6f2d3;
+}
+
+/* --- lists --- */
+.visits {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* A fixed height, so the panel does not resize as people come and go. */
+.list-box {
+  height: clamp(180px, 30vh, 360px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.empty-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.visits li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.visits li:last-child {
+  border-bottom: 0;
+}
+
+.who {
+  min-width: 0;
+}
+
+.who strong {
+  font-size: 14.5px;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: #9a9ab8;
+  margin-top: 3px;
+}
+
+.tag {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(72, 72, 229, 0.22);
+  color: #b9b9ff;
+}
+
+.empty {
+  font-size: 14px;
+  color: #9a9ab8;
+}
+
+.since {
+  font-size: 12px;
+  color: #7a7a99;
+  margin-top: 10px;
+  text-align: right;
+}
+
+.clear-demo {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.hints ul {
+  margin: 10px 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  color: #c9c9f2;
+}
+
+/* --- dialog --- */
+.modal {
+  /* The `* { margin: 0 }` reset above kills the `margin: auto` that a native
+     dialog uses to centre itself, which parks it in the top-left. Put it back. */
+  margin: auto;
+  width: min(420px, calc(100vw - 32px));
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: #1a1a35;
+  color: #e8e8f0;
+}
+
+.modal::backdrop {
+  background: rgba(6, 6, 16, 0.62);
+}
+
+.modal-head {
+  margin-bottom: 10px;
+}
+
+.modal-head h2 {
+  margin: 0;
+}
+
+.confirm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+/* --- scrollbars --- */
+.list-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list-box::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+}
+
+.list-box {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
