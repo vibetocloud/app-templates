@@ -17,6 +17,8 @@ here is public so you can see exactly what you're getting before you pick one.
 
 | ID | Name | What it sets up |
 |----|------|-----------------|
+| `empty` | Empty | A minimal static starter — the Vibe to Cloud logo on a page, served by nginx. No build, no backend. |
+| `bookings` | Room bookings | A room booking calendar with day and week views. Next.js + TypeScript + Prisma + Postgres; double-booking is prevented and demo data is seeded. |
 | `fastify-api` | API Service | REST API using Fastify + TypeScript + Prisma + Postgres. Health check gated on the database, migrations applied on deploy. |
 | `ai-app` | AI App | Claude-powered chat API (Fastify + `@anthropic-ai/sdk`). Reads `ANTHROPIC_API_KEY` from a secret; no database. |
 | `next-fullstack` | Full-stack (Next.js) | Next.js App Router + TypeScript + Prisma + Postgres. SSR + API routes in one service; health route gated on the database. |

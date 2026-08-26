@@ -1,0 +1,659 @@
+:root {
+  color-scheme: dark;
+  /* Height of one hour row. Shrink this to fit more hours on screen. */
+  --hour-h: 44px;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: #e8e8f0;
+  background: radial-gradient(1200px 600px at 50% -10%, #2b2b5c 0%, #14142b 45%, #0d0d1c 100%);
+  min-height: 100vh;
+}
+
+/* The app fills the window and the calendar scrolls inside it, so the whole
+   interface stays on one screen instead of the page growing past the fold. */
+html,
+body {
+  height: 100%;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  overflow-y: auto;
+}
+/* The last card grows so the sidebar finishes level with the calendar. */
+.sidebar > :last-child {
+  flex: 1;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .page {
+    height: auto;
+    min-height: 100dvh;
+    padding-bottom: 48px;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    overflow: visible;
+  }
+  /* On a narrow screen the calendar is the point — the sidebar follows it. */
+  .sidebar > :last-child {
+    flex: none;
+  }
+  .sidebar {
+    order: 2;
+  }
+  .main {
+    order: 1;
+  }
+}
+h1 {
+  font-size: clamp(26px, 5vw, 36px);
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: 17px;
+  margin-bottom: 14px;
+}
+.sub {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #9a9ab8;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.row {
+  display: flex;
+  gap: 14px;
+}
+.row > label {
+  flex: 1 1 0;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  color: #c9c9f2;
+  min-width: 0;
+}
+input,
+select {
+  font: inherit;
+  font-size: 14.5px;
+  /* A flex item will not shrink below its content width without this, and
+     datetime-local is intrinsically wide — that is what pushed it past the dialog edge. */
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #e8e8f0;
+}
+/* The picker icon is black-on-dark by default in Chrome. */
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.55;
+  cursor: pointer;
+}
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+input:focus,
+select:focus {
+  outline: 2px solid #6b6bff;
+  outline-offset: 1px;
+}
+
+button[type="submit"] {
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #4848e5;
+  color: #fff;
+  cursor: pointer;
+}
+button[type="submit"]:hover {
+  background: #5a5aff;
+}
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.link {
+  font: inherit;
+  font-size: 13px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #9a9ab8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.link:hover {
+  color: #c9c9f2;
+}
+
+.error {
+  font-size: 13.5px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: rgba(229, 72, 72, 0.13);
+  border: 1px solid rgba(229, 72, 72, 0.4);
+  color: #ffc9c9;
+}
+
+.bookings {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* A fixed height, not a maximum: the card stays the same size whether there
+   are no bookings or twenty, so nothing below it shifts as bookings change. */
+.bookings-box {
+  height: clamp(160px, 32vh, 420px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.empty-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.bookings li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.bookings li > div {
+  min-width: 0;
+}
+.bookings strong {
+  font-size: 14px;
+}
+.bookings li:last-child {
+  border-bottom: 0;
+}
+.meta {
+  font-size: 13px;
+  color: #9a9ab8;
+  margin-top: 3px;
+}
+.tag {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(72, 72, 229, 0.22);
+  color: #b9b9ff;
+}
+.empty {
+  font-size: 14px;
+  color: #9a9ab8;
+}
+
+.hints ul {
+  margin: 10px 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 14px;
+  color: #c9c9f2;
+}
+
+@media (max-width: 480px) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+/* --- header / navigation --- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch {
+  display: flex;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.switch a {
+  padding: 8px 14px;
+  font-size: 13.5px;
+  color: #9a9ab8;
+  text-decoration: none;
+  background: rgba(0, 0, 0, 0.2);
+}
+.switch a:hover {
+  color: #e8e8f0;
+}
+.switch a.on {
+  background: rgba(72, 72, 229, 0.28);
+  color: #fff;
+}
+
+button.primary,
+.primary {
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: #4848e5;
+  color: #fff;
+  cursor: pointer;
+}
+button.primary:hover {
+  background: #5a5aff;
+}
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pager a {
+  min-width: 34px;
+  height: 32px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: #c9c9f2;
+  font-size: 14px;
+  text-decoration: none;
+}
+.pager a:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* --- calendar --- */
+.calendar {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+.cal-scroll {
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+.cal-head,
+.cal-body {
+  display: grid;
+  grid-template-columns: 58px repeat(var(--days), minmax(0, 1fr));
+}
+.cal-head {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+.col-head {
+  padding: 10px 6px;
+  text-align: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.col-head .dow {
+  font-size: 12px;
+  color: #9a9ab8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.col-head .dom {
+  font-size: 14.5px;
+  font-weight: 600;
+}
+.col-head.today .dom {
+  color: #b9b9ff;
+}
+.col-head.today {
+  background: rgba(72, 72, 229, 0.1);
+}
+
+.cal-body {
+  position: relative;
+}
+.gutter {
+  display: flex;
+  flex-direction: column;
+}
+.hour-label {
+  height: var(--hour-h);
+  padding-right: 8px;
+  font-size: 11.5px;
+  color: #7a7a99;
+  text-align: right;
+  transform: translateY(-6px);
+}
+
+.day-col {
+  position: relative;
+  border-left: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+}
+.day-col.today {
+  background: rgba(72, 72, 229, 0.06);
+}
+
+.slot {
+  height: var(--hour-h);
+  border: 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: transparent;
+  cursor: pointer;
+}
+.slot:hover {
+  background: rgba(72, 72, 229, 0.16);
+}
+.slot:focus-visible {
+  outline: 2px solid #6b6bff;
+  outline-offset: -2px;
+}
+
+.event {
+  position: absolute;
+  overflow: hidden;
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: #4848e5;
+  border: 1px solid #6b6bff;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.event strong {
+  font-size: 12.5px;
+  line-height: 1.25;
+}
+.event .ev-meta {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.78);
+}
+.event.demo {
+  background: rgba(72, 72, 229, 0.55);
+  border-style: dashed;
+}
+
+/* --- dialog --- */
+.modal {
+  /* The `* { margin: 0 }` reset above kills the `margin: auto` that a native
+     dialog uses to centre itself, which parks it in the top-left. Put it back. */
+  margin: auto;
+  width: min(440px, calc(100vw - 32px));
+  padding: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: #1a1a35;
+  color: #e8e8f0;
+}
+.modal::backdrop {
+  background: rgba(6, 6, 16, 0.62);
+}
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.modal-head h2 {
+  margin: 0;
+}
+.icon-button {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: #9a9ab8;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+}
+.icon-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8e8f0;
+}
+.icon-button:focus-visible {
+  outline: 2px solid #6b6bff;
+  outline-offset: 1px;
+}
+
+@media (max-width: 720px) {
+  .cal-head,
+  .cal-body {
+    grid-template-columns: 46px repeat(var(--days), minmax(0, 1fr));
+  }
+  .event strong {
+    font-size: 11.5px;
+  }
+  .event .ev-meta {
+    display: none;
+  }
+}
+
+/* events are buttons now — keep them looking like blocks, not controls */
+button.event {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.event:hover {
+  filter: brightness(1.14);
+}
+button.event:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 1px;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+.form-actions-left {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+}
+.form-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.confirm-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+button.destructive.small {
+  font-size: 13px;
+  padding: 7px 12px;
+}
+.link.danger {
+  color: #ff9d9d;
+}
+.link.danger:hover {
+  color: #ffc9c9;
+}
+
+/* destructive actions */
+.icon-button.danger {
+  color: #9a9ab8;
+}
+.icon-button.danger:hover {
+  color: #ff9d9d;
+  border-color: rgba(255, 157, 157, 0.4);
+  background: rgba(229, 72, 72, 0.12);
+}
+
+button.destructive {
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: #c9333f;
+  color: #fff;
+  cursor: pointer;
+}
+button.destructive:hover {
+  background: #e04150;
+}
+
+.confirm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.clear-demo {
+  margin-top: 14px;
+  text-align: center;
+}
+.clear-demo button {
+  font-size: 12.5px;
+}
+
+/* These must come after the .calendar rules above to override them —
+   same specificity, so source order decides. */
+@media (max-width: 900px) {
+  .calendar {
+    flex: none;
+  }
+  .cal-scroll {
+    overflow: visible;
+  }
+}
+
+/* A quieter scrollbar for the panels that scroll. */
+.bookings::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar,
+.cal-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.bookings::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb,
+.cal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+}
+.bookings::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover,
+.cal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+.bookings,
+.sidebar,
+.cal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
