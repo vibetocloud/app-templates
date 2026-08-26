@@ -1,0 +1,527 @@
+/* Colours live in one place so light and dark are the same stylesheet with
+   different values. Add a colour here, not in a rule. */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: radial-gradient(1200px 600px at 50% -10%, #2b2b5c 0%, #14142b 45%, #0d0d1c 100%);
+  --fg: #e8e8f0;
+  --muted: #9a9ab8;
+  --faint: #7a7a99;
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.07);
+  --input-bg: rgba(0, 0, 0, 0.28);
+  --input-border: rgba(255, 255, 255, 0.14);
+  --hover: rgba(255, 255, 255, 0.08);
+  --accent: #4848e5;
+  --accent-hover: #5a5aff;
+  --accent-soft: rgba(72, 72, 229, 0.22);
+  --accent-text: #b9b9ff;
+  --on-accent: #fff;
+  --label: #c9c9f2;
+  --surface: #1a1a35;
+  --error-bg: rgba(229, 72, 72, 0.13);
+  --error-border: rgba(229, 72, 72, 0.4);
+  --error-fg: #ffc9c9;
+  --ok-bg: rgba(72, 229, 145, 0.12);
+  --ok-border: rgba(72, 229, 145, 0.35);
+  --ok-fg: #b6f2d3;
+  --scroll: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: radial-gradient(1200px 600px at 50% -10%, #e7e7ff 0%, #f4f4fb 45%, #fafaff 100%);
+  --fg: #1b1b2e;
+  --muted: #5d5d78;
+  --faint: #83839b;
+  --card: rgba(255, 255, 255, 0.85);
+  --border: rgba(27, 27, 46, 0.12);
+  --line: rgba(27, 27, 46, 0.09);
+  --input-bg: #fff;
+  --input-border: rgba(27, 27, 46, 0.18);
+  --hover: rgba(27, 27, 46, 0.05);
+  --accent: #4848e5;
+  --accent-hover: #3a3ad0;
+  --accent-soft: rgba(72, 72, 229, 0.12);
+  --accent-text: #3a3ad0;
+  --on-accent: #fff;
+  --label: #3f3f5c;
+  --surface: #fff;
+  --error-bg: rgba(200, 40, 50, 0.08);
+  --error-border: rgba(200, 40, 50, 0.32);
+  --error-fg: #a51f2c;
+  --ok-bg: rgba(20, 150, 90, 0.1);
+  --ok-border: rgba(20, 150, 90, 0.3);
+  --ok-fg: #12724a;
+  --scroll: rgba(27, 27, 46, 0.22);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--fg);
+}
+
+/* The gradient sits on a fixed layer behind everything. On `body` it would only
+   paint the first screenful, so scrolling down revealed its pale tail. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: -1;
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 24px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.page-head h1 {
+  font-size: clamp(26px, 4.5vw, 36px);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 400px;
+  gap: 20px;
+  align-items: start;
+}
+
+.main-col,
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+h2 {
+  font-size: 16.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.count {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.sub {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* --- form --- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--label);
+  min-width: 0;
+}
+
+.optional {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+input,
+textarea {
+  font: inherit;
+  font-size: 15px;
+  width: 100%;
+  min-width: 0;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--fg);
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button.primary {
+  font: inherit;
+  font-weight: 600;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--on-accent);
+  cursor: pointer;
+}
+
+button.primary:hover {
+  background: var(--accent-hover);
+}
+
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.primary.big {
+  font-size: 16px;
+  padding: 13px 20px;
+  margin-top: 2px;
+}
+
+.ghost {
+  font: inherit;
+  font-size: 13px;
+  white-space: nowrap;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--input-border);
+  color: var(--label);
+  cursor: pointer;
+  flex: none;
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.ghost:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.icon-button {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.link {
+  font: inherit;
+  font-size: 12.5px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: var(--fg);
+}
+
+.see-more {
+  font: inherit;
+  font-size: 13px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px;
+  border-radius: 9px;
+  background: transparent;
+  border: 1px dashed var(--input-border);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.see-more:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.error,
+.success {
+  font-size: 13.5px;
+  padding: 11px 13px;
+  border-radius: 10px;
+}
+
+.error {
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-fg);
+}
+
+.success {
+  background: var(--ok-bg);
+  border: 1px solid var(--ok-border);
+  color: var(--ok-fg);
+}
+
+/* --- lists --- */
+.leads {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.leads li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.leads li:first-child {
+  padding-top: 0;
+}
+
+.leads li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.lead-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.lead-head > div {
+  min-width: 0;
+}
+
+.lead-head strong {
+  font-size: 14.5px;
+}
+
+/* Fixed width so the button is in the same place on every row, whatever the
+   label says and however long the name beside it is. */
+.ghost.action {
+  width: 104px;
+  text-align: center;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.meta a {
+  color: var(--muted);
+}
+
+.meta a:hover {
+  color: var(--fg);
+}
+
+.message {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--label);
+  margin-top: 7px;
+  white-space: pre-wrap;
+}
+
+.message.full {
+  font-size: 14px;
+  margin-top: 0;
+}
+
+.detail-meta {
+  margin: 0 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* The mail link is a button to the eye, an anchor to the browser. */
+a.ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+
+.tag {
+  margin-left: 8px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+
+.empty {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.clear-demo {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.hints ul {
+  margin: 10px 0 0 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+  color: var(--label);
+}
+
+/* Hidden from people, visible to bots — see looksLikeSpam. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* --- dialogs --- */
+.modal {
+  /* The `* { margin: 0 }` reset above kills the `margin: auto` that a native
+     dialog uses to centre itself, which parks it in the top-left. Put it back. */
+  margin: auto;
+  width: min(420px, calc(100vw - 32px));
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--fg);
+}
+
+.modal.wide {
+  width: min(620px, calc(100vw - 32px));
+  max-height: min(80dvh, 760px);
+}
+
+/* Only when open: a bare `display: flex` here would override the browser's
+   own `display: none` for a closed dialog and leave it on the page. */
+.modal.wide[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal::backdrop {
+  background: rgba(6, 6, 16, 0.55);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.modal-head h2 {
+  margin: 0;
+}
+
+.scroller {
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.confirm-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+/* --- scrollbars --- */
+.scroller::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: var(--scroll);
+  border-radius: 8px;
+}
+
+.scroller {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll) transparent;
+}
