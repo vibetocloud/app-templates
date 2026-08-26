@@ -23,7 +23,6 @@ here is public so you can see exactly what you're getting before you pick one.
 | `leads` | Enquiry inbox | A contact form and the shared inbox for what it collects. Next.js + TypeScript + Prisma + Postgres. |
 | `fastify-api` | API Service | REST API using Fastify + TypeScript + Prisma + Postgres. Health check gated on the database, migrations applied on deploy. |
 | `ai-app` | AI App | Claude-powered chat API (Fastify + `@anthropic-ai/sdk`). Reads `ANTHROPIC_API_KEY` from a secret; no database. |
-| `decoupled-fullstack` | Full-stack (decoupled) | Vite React SPA + a separate Fastify/Prisma API + Postgres, as three compose services. Exercises multi-container networking. |
 
 ## Layout
 
