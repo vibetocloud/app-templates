@@ -17,7 +17,6 @@ here is public so you can see exactly what you're getting before you pick one.
 
 | ID | Name | What it sets up |
 |----|------|-----------------|
-| `static-spa` | Static SPA | Vite + React + TypeScript single-page app served by nginx. No backend or database. |
 | `fastify-api` | API Service | REST API using Fastify + TypeScript + Prisma + Postgres. Health check gated on the database, migrations applied on deploy. |
 | `ai-app` | AI App | Claude-powered chat API (Fastify + `@anthropic-ai/sdk`). Reads `ANTHROPIC_API_KEY` from a secret; no database. |
 | `next-fullstack` | Full-stack (Next.js) | Next.js App Router + TypeScript + Prisma + Postgres. SSR + API routes in one service; health route gated on the database. |
